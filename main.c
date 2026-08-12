@@ -1,8 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#define DIM 40
 
 // Main code src
-// Database for a library 
+// Database for a library
+
+typedef struct {
+    int id;
+    char book_name[DIM];
+    char book_author[DIM];
+} Element;
+
+typedef struct node{
+    Element d;
+    struct node *next;
+} Node;
+
+typedef struct Node *LINK;
 
 //struct declaration for book
 
@@ -38,12 +53,12 @@ int main(int argc, char *argv[])
         {
             case 1:
             {
-                void add_book(FILE *fp);
+                add_book(fp);
                 break;
             }
             case 2:
             {
-                void search_book(FILE *fp);
+                //search_book(fp);
                 break;
             }
             //add modify book based on ID
@@ -60,6 +75,36 @@ int main(int argc, char *argv[])
 
     }
 
+    fclose(fp);
 
+    return 0;
+}
 
+void add_book(FILE *fp)
+{
+    char buffer[DIM];
+    int id,next_id;
+    char book_name[DIM];
+    char book_author[DIM];
+
+    next_id = 0;
+
+    rewind(fp);
+    while (fscanf(fp, "%d %39s %39s", &id, book_name, book_author) == 3) {
+        next_id = id + 1;
+    }
+
+    printf("\n\n=== New book ===");
+    fprintf(fp,"%d",next_id);
+
+    printf("\nEnter new book name: ");
+    fgets(buffer, DIM, stdin);
+    fgets(buffer, DIM, stdin);
+    fprintf(fp,"\n%s",buffer);
+
+    printf("\nEnter new book author: ");
+    fgets(buffer, DIM, stdin);
+    fprintf(fp,"%s",buffer);
+
+    return;
 }
