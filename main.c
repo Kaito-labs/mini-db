@@ -4,6 +4,11 @@
 // Main code src
 // Database for a library 
 
+//struct declaration for book
+
+//proto for main
+void add_book(FILE *fp);
+void search_book(FILE *fp);
 
 int main(int argc, char *argv[])
 {
@@ -33,14 +38,16 @@ int main(int argc, char *argv[])
         {
             case 1:
             {
-
+                void add_book(FILE *fp);
                 break;
             }
             case 2:
             {
-
+                void search_book(FILE *fp);
                 break;
             }
+            //add modify book based on ID
+            //add databse stats
             case 3:
             {
                 exit(EXIT_SUCCESS);
