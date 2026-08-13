@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
         printf("\n=== MAIN MENU ===\n");
         printf("\n1) Enter new book");
         printf("\n2) Search book");
-        printf("\n3) Exit\n");
+        printf("\n3) Exit\n\n");
 
         scanf("%d",&menu);
 
@@ -58,13 +58,14 @@ int main(int argc, char *argv[])
             }
             case 2:
             {
-                //search_book(fp);
+                search_book(fp);
                 break;
             }
             //add modify book based on ID
             //add databse stats
             case 3:
             {
+                printf("\nClosing the program, Goodbye!\n");
                 exit(EXIT_SUCCESS);
                 break;
             }
@@ -107,4 +108,36 @@ void add_book(FILE *fp)
     fprintf(fp,"%s",buffer);
 
     return;
+}
+
+void search_book(FILE *fp)
+{
+    int id,flag;
+    char Sbook_name[DIM], tmp_name[DIM];
+    char Sbook_author[DIM], tmp_author[DIM];
+
+    rewind(fp);
+    flag = 0;
+
+    printf("\n\n=== Search book ===");
+    printf("\nEnter book name: ");
+    fgets(Sbook_name, DIM, stdin);
+    fgets(Sbook_name, DIM, stdin);
+    Sbook_name[strcspn(Sbook_name, "\n")] = '\0'; // remove the \n 
+
+    printf("\nEnter new book author: ");
+    fgets(Sbook_author, DIM, stdin);
+    Sbook_author[strcspn(Sbook_author, "\n")] = '\0';
+
+    while (fscanf(fp, "%d %39s %39s", &id, tmp_name, tmp_author) == 3 && !flag) {
+        if(strcmp(Sbook_name,tmp_name) == 0 && strcmp(Sbook_author,tmp_author) == 0) {
+            flag = 1;
+        }
+    }
+    
+    if(flag == 1) 
+        printf("\nBook found!\nBook id = %d\n",id);
+    else {
+        printf("\nBook not found!\n");
+    }
 }
