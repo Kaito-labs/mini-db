@@ -3,8 +3,7 @@
 #include <string.h>
 #define DIM 40
 
-// Main code src
-// Database for a library
+// Database for a library format id name author
 
 typedef struct {
     int id;
@@ -19,12 +18,13 @@ typedef struct node{
 
 typedef struct Node *LINK;
 
-//struct declaration for book
 
 //proto for main
 void add_book(FILE *fp);
 void search_book(FILE *fp);
 
+
+// main 
 int main(int argc, char *argv[])
 {
     int menu;
@@ -61,8 +61,11 @@ int main(int argc, char *argv[])
                 search_book(fp);
                 break;
             }
+            
             //add modify book based on ID
+            
             //add databse stats
+            
             case 3:
             {
                 printf("\nClosing the program, Goodbye!\n");
@@ -81,6 +84,9 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+
+
+// Menu func: 
 void add_book(FILE *fp)
 {
     char buffer[DIM];
