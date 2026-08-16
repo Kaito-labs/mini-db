@@ -14,14 +14,15 @@ typedef struct {
 typedef struct node{
     Element d;
     struct node *next;
-} Node;
+} node;
 
-typedef struct Node *LINK;
+typedef struct node *LINK;
 
 
 //proto for main
 void add_book(FILE *fp);
 void search_book(FILE *fp);
+void print_database_stats(FILE *fp);
 
 
 // main 
@@ -45,7 +46,8 @@ int main(int argc, char *argv[])
         printf("\n=== MAIN MENU ===\n");
         printf("\n1) Enter new book");
         printf("\n2) Search book");
-        printf("\n3) Exit\n\n");
+        printf("\n3) Database stats");
+        printf("\n4) Exit\n\n");
 
         scanf("%d",&menu);
 
@@ -64,9 +66,13 @@ int main(int argc, char *argv[])
             
             //add modify book based on ID
             
-            //add databse stats
-            
             case 3:
+            {
+                print_database_stats(fp);
+                break;
+            }
+            
+            case 4:
             {
                 printf("\nClosing the program, Goodbye!\n");
                 exit(EXIT_SUCCESS);
@@ -147,3 +153,47 @@ void search_book(FILE *fp)
         printf("\nBook not found!\n");
     }
 }
+
+LINK new_node()
+{
+    LINK d = malloc(sizeof(node));
+    if(d == NULL) {
+        printf("Memory allocation failed\n");
+        exit(EXIT_FAILURE);
+    }
+    return d;
+}
+
+void print_database_stats(FILE *fp)
+{
+    rewind(fp);
+    int id;
+    char book_name[DIM];
+    char book_author[DIM];
+    LINK head,tail;
+    head = NULL;
+
+    rewind(fp);
+    while (fscanf(fp, "%d %39s %39s", &id, book_name, book_author) == 3) {
+        LINK p = new_node();
+
+        p->d.id = id;
+        strcpy(p->d.book_name, book_name);
+        strcpy(p->d.book_author, book_author);
+
+        if(head == NULL) {
+            head = p;
+            tail = p;
+        }
+        else {
+            tail->next = p;
+            tail = p;
+        }
+    } 
+
+    //we want to allocate the whole database as a linked list
+    //then print some data about the database reading from the list
+
+
+}
+
