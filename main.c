@@ -167,7 +167,7 @@ LINK new_node()
 void print_database_stats(FILE *fp)
 {
     rewind(fp);
-    int id;
+    int id,counter;
     char book_name[DIM];
     char book_author[DIM];
     LINK head,tail;
@@ -176,6 +176,7 @@ void print_database_stats(FILE *fp)
     rewind(fp);
     while (fscanf(fp, "%d %39s %39s", &id, book_name, book_author) == 3) {
         LINK p = new_node();
+        p->next = NULL;
 
         p->d.id = id;
         strcpy(p->d.book_name, book_name);
@@ -191,9 +192,25 @@ void print_database_stats(FILE *fp)
         }
     } 
 
-    //we want to allocate the whole database as a linked list
+    LINK tmp = head;
+    counter = 0;
+
+    while(tmp != NULL)
+    {
+        counter++;
+        tmp = tmp->next;
+
+
+    }
+    //we want to allocate the whole database as a linked list not just read from the text
+
     //then print some data about the database reading from the list
+    printf("\n== Data Base Stats ==\n");
+    printf("Total: %d\n",counter);
+    printf("\n");
 
 
+
+    //free the linked list
 }
 
