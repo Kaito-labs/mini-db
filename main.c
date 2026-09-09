@@ -265,6 +265,23 @@ void print_database_stats(FILE *fp)
     printf("\n== Data Base Stats ==\n");
     printf("Total: %d\n", counter);
 
+    printf("\nEnter Author to search: ");
+    char tmp_book_author[DIM];
+    scanf("%s",tmp_book_author);
+
+    tmp = head;
+    counter = 0;
+    while (tmp != NULL) {
+        if(strcmp(tmp->d.book_author,tmp_book_author) == 0) {
+            counter++;
+        }
+        tmp = tmp->next;
+    }
+    if(counter == 0) {
+        printf("\nAuthor: %s\nNo books have been found!",tmp_book_author); }
+    else 
+        printf("\nAuthor: %s\n%d books have been found!",tmp_book_author,counter);
+
     //use the linked list for more statistics
     // e.g. print all books, search, sort, etc.
 
