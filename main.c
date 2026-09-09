@@ -23,7 +23,7 @@ typedef struct node *LINK;
 // prototypes
 void add_book(FILE *fp);
 void search_book(FILE *fp);
-void rm_book(FILE *fp);
+FILE *rm_book(FILE *fp);
 void print_database_stats(FILE *fp);
 
 int main(int argc, char *argv[])
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
         printf("\n=== MAIN MENU ===\n");
         printf("\n1) Enter new book");
         printf("\n2) Search book");
-        printf("\n3) Update book");
+        printf("\n3) Remove book");
         printf("\n4) Database stats");
         printf("\n5) Exit\n\n");
 
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
                 break;
 
             case 3:
-                update_book(fp);
+                fp = rm_book(fp);
                 break;
 
             case 4:
@@ -149,7 +149,7 @@ void search_book(FILE *fp)
 
 
 // op3
-void rm_book(FILE *fp)
+FILE *rm_book(FILE *fp)
 {
     int id, flag = 0;
     int temp_ID;
@@ -158,7 +158,7 @@ void rm_book(FILE *fp)
 
     rewind(fp);
 
-    printf("\n\n=== Update book ===");
+    printf("\n\n=== Remove Book ===");
     printf("\nEnter book id: ");
     scanf("%d", &id);
 
@@ -168,7 +168,21 @@ void rm_book(FILE *fp)
             printf("\nName: %s", tmp_name);
             printf("\nAuthor: %s\n", tmp_author);
 
-            // TODO: remove book (write all records except this one to a temporary file)
+            printf("\nRemoving book...\n");
+
+            //file copy and rm
+            FILE *tmp = fopen("tmp.txt","w");
+            rewind(fp);
+            while(fscanf(fp, "%d %39s %39s", &temp_ID, tmp_name, tmp_author) == 3) {
+                if(temp_ID != id) {
+                    fprintf(tmp,"%d %s %s\n",temp_ID, tmp_name, tmp_author);
+                }
+            }
+            fclose(fp);
+            fclose(tmp);
+            remove("library.bd");
+
+            rename("tmp.txt","library.bd");
 
             flag = 1;
             break;
@@ -177,6 +191,10 @@ void rm_book(FILE *fp)
 
     if (!flag)
         printf("\nBook not found!\n");
+    else  {
+        printf("\nBook removed!\n"); }
+
+    return fp; 
 }
 
 
@@ -246,6 +264,23 @@ void print_database_stats(FILE *fp)
 
     printf("\n== Data Base Stats ==\n");
     printf("Total: %d\n", counter);
+
+    printf("\nEnter Author to search: ");
+    char tmp_book_author[DIM];
+    scanf("%s",tmp_book_author);
+
+    tmp = head;
+    counter = 0;
+    while (tmp != NULL) {
+        if(strcmp(tmp->d.book_author,tmp_book_author) == 0) {
+            counter++;
+        }
+        tmp = tmp->next;
+    }
+    if(counter == 0) {
+        printf("\nAuthor: %s\nNo books have been found!",tmp_book_author); }
+    else 
+        printf("\nAuthor: %s\n%d books have been found!",tmp_book_author,counter);
 
     //use the linked list for more statistics
     // e.g. print all books, search, sort, etc.
